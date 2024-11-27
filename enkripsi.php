@@ -29,7 +29,8 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="index.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+          <li class="active"><a href="index.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+          </li>
           <li><a href="#enkripsi">ENKRIPSI</a></li>
           <li><a href="dekripsi.php">DEKRIPSI</a></li>
         </ul>
@@ -49,7 +50,8 @@
             <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
             <input id="upload" type="file" accept="image/*" class="form-control" name="gambar">
           </div><br>
-          <button class="btn btn-primary btn-lg" type="submit" id="submit" name="submit">Enkripsi <span class="glyphicon glyphicon-lock" aria-hidden="true"></span></button><br><br>
+          <button class="btn btn-primary btn-lg" type="submit" id="submit" name="submit">Enkripsi <span
+              class="glyphicon glyphicon-lock" aria-hidden="true"></span></button><br><br>
         </div>
       </form>
     </div>
@@ -67,7 +69,7 @@
         if (in_array($ext, $valid_array)) {
           $enkripsi = enkripsi(file_get_contents($_FILES['gambar']['tmp_name']));
           file_put_contents('tmp/Encrypt.txt', $enkripsi);
-      ?>
+          ?>
 
           <form method="post" action="getTxt.php" enctype="multipart/form-data">
             <textarea name="txt" class="form-control" rows="8" id="comment"><?php echo $enkripsi; ?></textarea>
@@ -78,7 +80,7 @@
             <button type="submit" class="btn btn-success" href="gettxt.php">Unduh Hasil Enkripsi</button>
           </form>
 
-      <?php
+          <?php
         } else {
 
           echo "<br><div class='alert alert-danger'><strong>Maaf... file yang ada pilih bukan file gambar. Hanya file JPG, PNG, GIF, BMP atau PSD yang boleh diupload..!</strong></div>";
@@ -91,9 +93,9 @@
 
   <!-- JavaScript -->
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Add smooth scrolling to all links in navbar + footer link
-      $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+      $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
 
         // Make sure this.hash has a value before overriding default behavior
         if (this.hash !== "") {
@@ -108,7 +110,7 @@
           // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
           $('html, body').animate({
             scrollTop: $(hash).offset().top
-          }, 900, function() {
+          }, 900, function () {
 
             // Add hash (#) to URL when done scrolling (default click behavior)
             window.location.hash = hash;
