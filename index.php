@@ -123,7 +123,8 @@
                 <div class="collapse" id="resultDecrypted">
                   <h3 class="h6 mt-3">Hasil Dekripsi</h3>
                   <div class="form-group">
-                    <img id="img-result" src="" alt="Hasil Dekripsi" style="max-width: 100%;" />
+                    <img id="img-result" class="border d-block mx-auto mb-2" src="" alt="Hasil Dekripsi" style="max-width: 100%;" />
+                    <div><small class="form-text">Untuk mengunduh gambar diatas, silahkan (untuk laptop/pc) klik kanan lalu simpan (untuk mobile/phone) tahan gambar sampai muncul menu opsi, lalu unduh gambar.</small></div>
                   </div>
                 </div>
               </div>
