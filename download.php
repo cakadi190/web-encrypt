@@ -47,7 +47,7 @@ class DownloadHandler
    * @return void
    * @throws \Exception If the file cannot be retrieved or sent
    */
-  public function handle()
+  public function handleRequest()
   {
     $fileName = $this->request->input("filename");
 
@@ -69,5 +69,5 @@ $request = new Request();
 $response = new Response();
 
 $instance = new DownloadHandler($file, $request, $response);
-$instance->handle();
+$instance->handleRequest();
 
