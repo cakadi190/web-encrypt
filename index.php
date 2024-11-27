@@ -17,8 +17,9 @@
           <div class="card-img-top overflow-hidden relative rounded-top-4" style="height: 100px;">
             <img class="w-100 object-fit-cover" src="assets/images/compressed.jpg" alt="Cover" />
 
-            <div class="position-absolute p-3 d-flex flex-column align-items-center justify-content-center" style="top: 0; left: 0; right: 0; bottom: 0; height: 100px; width: 100%; background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(5px);">
-              <h5 class="text-white fw-bold mb-2 text-center">Encrypt Your File!</h5>
+            <div class="position-absolute p-3 d-flex flex-column align-items-center justify-content-center"
+              style="top: 0; left: 0; right: 0; bottom: 0; height: 100px; width: 100%; background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(5px);">
+              <h1 class="text-white display-5 fw-bold mb-2 text-center">Encrypt Your File!</h1>
             </div>
           </div>
           <div class="card-header bg-white">
@@ -37,7 +38,7 @@
           <div class="card-body tab-content">
             <div class="tab-pane fade show active" id="panduan">
               <div class="card-body card">
-                <h1 class="h5">Panduan Penggunaan</h1>
+                <h2 class="h5">Panduan Penggunaan</h2>
                 <p>Silahkan gunakan perkakas ini dengan benar dan tidak digunakan untuk menjaili atau merusak sistem
                   orang lain. Format yang didukung:</p>
 
@@ -60,7 +61,8 @@
             <div class="tab-pane fade" id="enkripsi">
               <div class="card card-body">
                 <h2 class="h5">Enkripsi</h2>
-                <p>Silahkan unggah berkas yang sesuai dengan format untuk dienkripsikan dan maksimal ukuran berkasnya adalah 5MB (atau 5120KB).</p>
+                <p>Silahkan unggah berkas yang sesuai dengan format untuk dienkripsikan dan maksimal ukuran berkasnya
+                  adalah 5MB (atau 5120KB).</p>
 
                 <form action="./process.php" id="post-encrypt" enctype="multipart/form-data" method="POST"
                   class="needs-validation" novalidate>
@@ -98,6 +100,33 @@
               </div>
             </div>
             <div class="tab-pane fade" id="dekripsi">
+              <div class="card card-body">
+                <h2 class="h5">Dekripsi</h2>
+                <p>Silahkan masukkan kunci enkripsi dan berkas yang ingin didekripsi.</p>
+
+                <form action="./process.php" id="post-decrypt" enctype="multipart/form-data" method="POST"
+                  class="needs-validation" novalidate>
+                  <div class="form-group mb-3">
+                    <label for="iv" class="form-label">Masukkan kunci enkripsi</label>
+                    <input type="text" name="iv" id="iv" class="form-control" required>
+                    <div class="invalid-feedback">Harap isi dengan data yang benar.</div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="file" class="form-label">Pilih berkas</label>
+                    <input type="file" name="file" id="file" data-max-size="5242880" class="form-control" accept=".enc"
+                      required />
+                    <div class="invalid-feedback">Harap isi dengan data yang benar.</div>
+                  </div>
+                  <button class="btn btn-primary" type="submit">Dekripsi</button>
+                </form>
+
+                <div class="collapse" id="resultDecrypted">
+                  <h3 class="h6 mt-3">Hasil Dekripsi</h3>
+                  <div class="form-group mb-3">
+                    <img id="img-result" src="" alt="Hasil Dekripsi" class="img-fluid" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -153,17 +182,19 @@
             event.preventDefault();
             event.stopPropagation();
           } else {
-            validateFile(event, form);
-
-            // Apply after here -------------------------------------
-            doUploadEncrypt(event);
+            if (form.id === 'post-encrypt') {
+              validateFile(event, form);
+              doUploadEncrypt(event);
+            } else if (form.id === 'post-decrypt') {
+              doUploadDecrypt(event);
+            }
           }
           form.classList.add('was-validated');
         });
       });
     });
 
-    function doUploadEncrypt(event) {
+    function doUploadDecrypt(event) {
       event.preventDefault();
       const form = event.target;
 
@@ -198,6 +229,95 @@
           $('#resultEncrypted').toggle(false);
           $('#download-link').attr('href', ``);
           $(form).find('button').html('Enkripsi');
+          $(form).find('button').removeAttr('disabled');
+        }
+      });
+    }
+
+    function doUploadDecrypt(event) {
+      event.preventDefault();
+      const form = event.target;
+
+      // Validasi kunci enkripsi
+      const ivInput = form.querySelector('#iv');
+      if (!ivInput.value.trim()) {
+        ivInput.classList.add('is-invalid');
+        ivInput.setCustomValidity('Kunci enkripsi tidak boleh kosong');
+        ivInput.reportValidity();
+        return;
+      }
+
+      const fileInput = form.querySelector('input[type="file"]');
+      const file = fileInput.files[0];
+
+      // Validasi file
+      if (!file) {
+        fileInput.classList.add('is-invalid');
+        fileInput.setCustomValidity('Harap pilih file untuk didekripsi');
+        fileInput.reportValidity();
+        return;
+      }
+
+      // Validasi ekstensi file
+      const fileName = file.name.toLowerCase();
+      if (!fileName.endsWith('.enc')) {
+        fileInput.classList.add('is-invalid');
+        fileInput.setCustomValidity('Hanya file dengan ekstensi .enc yang diperbolehkan');
+        fileInput.reportValidity();
+        return;
+      }
+
+      // Validasi ukuran file
+      const maxSize = parseInt(fileInput.dataset.maxSize);
+      if (file.size > maxSize) {
+        fileInput.classList.add('is-invalid');
+        fileInput.setCustomValidity(`Ukuran file terlalu besar. Maksimal ukuran file adalah ${(maxSize / (1024 * 1024)).toFixed()}MB`);
+        fileInput.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(form);
+      formData.append("type", "decrypt");
+
+      $.ajax({
+        url: './process.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+          // Reset validasi
+          ivInput.classList.remove('is-invalid');
+          fileInput.classList.remove('is-invalid');
+
+          $('#resultDecrypted').toggle(false);
+          $('#img-result').attr('src', '');
+          $(form).find('button').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+          $(form).find('button').attr('disabled', true);
+        },
+        success: function (data) {
+          const result = data.data;
+
+          if (result && result.result) {
+            $('#resultDecrypted').toggle(true);
+            $('#img-result').attr('src', `data:image/jpeg;base64,${result.result}`);
+          } else {
+            // Tambahkan penanganan kesalahan jika dekripsi gagal
+            alert('Dekripsi gagal. Pastikan kunci dan file enkripsi benar.');
+          }
+
+          $(form).find('button').html('Dekripsi');
+          $(form).find('button').removeAttr('disabled');
+        },
+        error: function (error) {
+          console.error(error);
+
+          // Tampilkan pesan kesalahan yang lebih informatif
+          alert('Terjadi kesalahan dalam proses dekripsi. Silakan coba lagi.');
+
+          $('#resultDecrypted').toggle(false);
+          $('#img-result').attr('src', '');
+          $(form).find('button').html('Dekripsi');
           $(form).find('button').removeAttr('disabled');
         }
       });

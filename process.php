@@ -24,7 +24,14 @@ class FileEncryptionHandler
    * 
    * @var string[]
    */
-  private const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+  private const ALLOWED_EXTENSIONS_ENCRYPT = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+
+  /**
+   * Daftar ekstensi berkas yang diizinkan untuk dekripsi
+   * 
+   * @var string[]
+   */
+  private const ALLOWED_EXTENSIONS_DECRYPT = ['enc'];
 
   /**
    * Ukuran maksimum file yang diizinkan (5MB)
@@ -105,7 +112,7 @@ class FileEncryptionHandler
    * @return bool Mengembalikan true jika file valid
    * @throws \Exception Jika file tidak valid dengan pesan kesalahan yang spesifik
    */
-  private function validateFile(array $file): bool
+  private function validateFile(array $file, array $allowedExtensions): bool
   {
     // Periksa apakah file diunggah
     if (!isset($file['tmp_name']) || empty($file['tmp_name'])) {
@@ -119,7 +126,7 @@ class FileEncryptionHandler
 
     // Validasi ekstensi
     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    if (!in_array($extension, self::ALLOWED_EXTENSIONS)) {
+    if (!in_array($extension, haystack: $allowedExtensions)) {
       throw new \Exception("Unsupported file type", 415);
     }
 
@@ -135,7 +142,7 @@ class FileEncryptionHandler
    */
   private function encryptFile(array $file): array
   {
-    $this->validateFile($file);
+    $this->validateFile($file, self::ALLOWED_EXTENSIONS_ENCRYPT);
 
     $fileContent = $this->fileService->getFile($file["tmp_name"]);
     $encryptedContent = $this->encryptService->encrypt($fileContent);
@@ -159,6 +166,32 @@ class FileEncryptionHandler
       "data" => [
         "fileName" => $filename,
         "iv" => bin2hex($iv),
+      ],
+    ];
+  }
+
+  /**
+   * Proses dekripsi file
+   * 
+   * @param array $file File yang akan didekripsi
+   * @param string $iv Kunci enkripsi yang digunakan untuk dekripsi
+   * @return array Informasi file terenkripsi
+   * @throws \Exception Jika terjadi kesalahan selama proses dekripsi
+   */
+  private function decryptFile(array $file, string $iv): array
+  {
+    $this->validateFile($file, self::ALLOWED_EXTENSIONS_DECRYPT);
+    $fileContent = $this->fileService->getFile($file["tmp_name"]);
+    $decryptedContent = $this->encryptService->decrypt($fileContent, hex2bin($iv));
+
+    return [
+      "status" => "success",
+      "message" => "File encrypted successfully",
+      "code" => 200,
+      "error" => false,
+      "success" => true,
+      "data" => [
+        "result" => base64_encode($decryptedContent),
       ],
     ];
   }
@@ -188,8 +221,10 @@ class FileEncryptionHandler
           echo $this->responseService->json($responseData, 200);
           break;
         case "decrypt":
-          // Implementasi dekripsi nanti
-          echo $this->responseService->json(["message" => "Decryption not implemented"], 200);
+          $iv = $this->requestService->input('iv');
+          $file = $this->requestService->file('file');
+          $responseData = $this->decryptFile($file, $iv);
+          echo $this->responseService->json($responseData, 200);
           break;
         default:
           throw new \Exception("Resource not found", 404);
