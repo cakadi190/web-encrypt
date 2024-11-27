@@ -122,8 +122,8 @@
 
                 <div class="collapse" id="resultDecrypted">
                   <h3 class="h6 mt-3">Hasil Dekripsi</h3>
-                  <div class="form-group mb-3">
-                    <img id="img-result" src="" alt="Hasil Dekripsi" class="img-fluid" />
+                  <div class="form-group">
+                    <img id="img-result" src="" alt="Hasil Dekripsi" style="max-width: 100%;" />
                   </div>
                 </div>
               </div>
@@ -193,6 +193,46 @@
         });
       });
     });
+
+    function doUploadEncrypt(event) {
+      event.preventDefault();
+      const form = event.target;
+
+      const formData = new FormData(form);
+      formData.append("type", "encrypt");
+
+      $.ajax({
+        url: './process.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+          $('#iv-result').val('');
+          $('#resultEncrypted').toggle(false);
+          $('#download-link').attr('href', ``);
+          $(form).find('button').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+          $(form).find('button').attr('disabled', true);
+        },
+        success: function (data) {
+          const result = data.data;
+          $('#resultEncrypted').toggle(!!result.iv);
+          $('#iv-result').val(result.iv);
+          $('#download-link').attr('href', `./download.php?filename=${result.fileName}`);
+
+          $(form).find('button').html('Enkripsi');
+          $(form).find('button').removeAttr('disabled');
+        },
+        error: function (error) {
+          console.log(error);
+          $('#iv-result').val('');
+          $('#resultEncrypted').toggle(false);
+          $('#download-link').attr('href', ``);
+          $(form).find('button').html('Enkripsi');
+          $(form).find('button').removeAttr('disabled');
+        }
+      });
+    }
 
     function doUploadDecrypt(event) {
       event.preventDefault();
