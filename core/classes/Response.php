@@ -5,7 +5,7 @@ namespace Core\Classes;
 /**
  * Class Response
  * @package Core\Classes
- * @author  Rully Anggara <rullyanggara@gmail.com>
+ * @author  Amir Zuhdi Wibowo, Muhammad Dimas Mulyono, Rinda Kusuma Wardani
  * @version 1.0
  */
 class Response
@@ -22,8 +22,28 @@ class Response
     foreach ($header as $key => $value) {
       header($key . ': ' . $value);
     }
-    echo json_encode($data);
-    exit;
+
+    // Convert all strings in the array to UTF-8
+    array_walk_recursive($data, function (&$item) {
+      if (is_string($item)) {
+        // Convert to UTF-8 if not already
+        $item = mb_convert_encoding($item, 'UTF-8', 'UTF-8');
+      }
+    });
+
+    // Encode data to JSON
+    $jsonData = json_encode($data);
+
+    // Check for JSON encoding errors
+    if ($jsonData === false) {
+      // Handle the error, e.g., log it or return an error response
+      var_dump(json_last_error_msg());
+      echo json_encode(['error' => 'Failed to encode data to JSON']);
+      return;
+    }
+
+    // Output the JSON data
+    echo $jsonData;
   }
 
   /**
@@ -33,12 +53,16 @@ class Response
    */
   public static function download(string $file, string $name, string $type = 'application/octet-stream')
   {
-    $size = filesize($file);
+    // Set headers
     header("Content-Type: $type");
-    header("Content-Disposition: attachment; filename=\"$name\"");
+    header("Content-Disposition: attachment; filename=\"" . basename($name) . "\"");
     header("Content-Transfer-Encoding: binary");
-    header("Content-Length: $size");
-    readfile($file);
+    header("Cache-Control: no-cache");
+    header("Pragma: no-cache");
+
+    echo $file;
+
     exit;
   }
 }
+

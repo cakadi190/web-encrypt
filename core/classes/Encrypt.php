@@ -32,10 +32,10 @@ class Encrypt
    *
    * @return string The decrypted string
    */
-  public static function decrypt(string $content): bool|string {
-    $decrypt = dekripsi_aes($content);
-    $decrypt = dekripsi_caesar($decrypt);
-    $decrypt = dekripsi_vigenere($decrypt);
+  public static function decrypt(string $content, string $iv): bool|string {
+    $decrypt = Cipher::decryptAes($content, $iv);
+    $decrypt = Cipher::decryptCaesar($decrypt);
+    $decrypt = Cipher::decryptVigenere($decrypt);
     return $decrypt;
   }
 }

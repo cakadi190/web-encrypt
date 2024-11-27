@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Encrypt Your File!</title>
-  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
 </head>
 
 <body>
@@ -66,6 +67,23 @@
                 </div>
                 <button class="btn btn-primary" type="submit">Enkripsi</button>
               </form>
+
+              <div class="collapse" id="resultEncrypted">
+                <h3 class="h6 mt-3">Hasil Enkripsi</h3>
+
+                <div class="form-group mb-3">
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="fas fa-key fa-fw"></i>
+                    </span>
+                    <input type="text" id="iv-result" readonly class="form-control" placeholder="Hasil Enkripsi" />
+                  </div>
+                  <div class="form-text">Mohon simpan kunci ini dengan baik untuk didekripsikan nanti.</div>
+                </div>
+
+                <a class="btn btn-primary" id="download-link">Unduh Hasil Enkripsi</a>
+              </div>
+
             </div>
             <div class="tab-pane fade" id="dekripsi">
             </div>
@@ -75,9 +93,10 @@
     </div>
   </div>
 
+  <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/bootstrap.bundle.min.js"></script>
-  <script>
 
+  <script>
     const supportedFormats = [
       { name: 'PNG', icon: './assets/images/png.png' },
       { name: 'JPG', icon: './assets/images/jpg.png' },
@@ -125,11 +144,37 @@
             validateFile(event, form);
 
             // Apply after here -------------------------------------
+            doUploadEncrypt(event);
           }
           form.classList.add('was-validated');
         });
       });
     });
+
+    function doUploadEncrypt(event) {
+      event.preventDefault();
+      const form = event.target;
+
+      const formData = new FormData(form);
+      formData.append("type", "encrypt");
+
+      $.ajax({
+        url: './process.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          const result = data.data;
+          $('#resultEncrypted').toggle(!!result.iv);
+          $('#iv-result').val(result.iv);
+          $('#download-link').attr('href', `./download.php?filename=${result.fileName}`);
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
 
     function validateFileSize(input) {
       const maxSize = parseInt(input.dataset.maxSize);
