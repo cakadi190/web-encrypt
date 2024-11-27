@@ -54,36 +54,37 @@
               </div>
             </div>
             <div class="tab-pane fade" id="enkripsi">
-              <h2 class="h5">Enkripsi</h2>
-              <p>Silahkan unggah berkas yang sesuai dengan format untuk dienkripsikan.</p>
+              <div class="card card-body">
+                <h2 class="h5">Enkripsi</h2>
+                <p>Silahkan unggah berkas yang sesuai dengan format untuk dienkripsikan.</p>
 
-              <form action="./process.php" id="post-encrypt" enctype="multipart/form-data" method="POST"
-                class="needs-validation" novalidate>
-                <div class="form-group mb-3">
-                  <label for="file" class="form-label">Pilih berkas</label>
-                  <input type="file" name="file" id="file" data-max-size="1048576" class="form-control" accept="image/*"
-                    required>
-                  <div class="invalid-feedback">Harap isi dengan data yang benar.</div>
-                </div>
-                <button class="btn btn-primary" type="submit">Enkripsi</button>
-              </form>
-
-              <div class="collapse" id="resultEncrypted">
-                <h3 class="h6 mt-3">Hasil Enkripsi</h3>
-
-                <div class="form-group mb-3">
-                  <div class="input-group">
-                    <span class="input-group-text">
-                      <i class="fas fa-key fa-fw"></i>
-                    </span>
-                    <input type="text" id="iv-result" readonly class="form-control" placeholder="Hasil Enkripsi" />
+                <form action="./process.php" id="post-encrypt" enctype="multipart/form-data" method="POST"
+                  class="needs-validation" novalidate>
+                  <div class="form-group mb-3">
+                    <label for="file" class="form-label">Pilih berkas</label>
+                    <input type="file" name="file" id="file" data-max-size="1048576" class="form-control"
+                      accept="image/*" required>
+                    <div class="invalid-feedback">Harap isi dengan data yang benar.</div>
                   </div>
-                  <div class="form-text">Mohon simpan kunci ini dengan baik untuk didekripsikan nanti.</div>
+                  <button class="btn btn-primary" type="submit">Enkripsi</button>
+                </form>
+
+                <div class="collapse" id="resultEncrypted">
+                  <h3 class="h6 mt-3">Hasil Enkripsi</h3>
+
+                  <div class="form-group mb-3">
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="fas fa-key fa-fw"></i>
+                      </span>
+                      <input type="text" id="iv-result" readonly class="form-control" placeholder="Hasil Enkripsi" />
+                    </div>
+                    <div class="form-text">Mohon simpan kunci ini dengan baik untuk didekripsikan nanti.</div>
+                  </div>
+
+                  <a class="btn btn-primary" id="download-link">Unduh Hasil Enkripsi</a>
                 </div>
-
-                <a class="btn btn-primary" id="download-link">Unduh Hasil Enkripsi</a>
               </div>
-
             </div>
             <div class="tab-pane fade" id="dekripsi">
             </div>
