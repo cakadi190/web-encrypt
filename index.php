@@ -13,9 +13,13 @@
   <div class="container py-5 min-vh-100">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="card rounded-4">
-          <div class="card-img-top overflow-hidden rounded-top-4" style="height: 200px;">
-            <img class="w-100 h-100 object-fit-cover" src="assets/images/compressed.jpg" alt="Cover">
+        <div class="card rounded-4 overflow-hidden">
+          <div class="card-img-top overflow-hidden relative rounded-top-4" style="height: 100px;">
+            <img class="w-100 object-fit-cover" src="assets/images/compressed.jpg" alt="Cover" />
+
+            <div class="position-absolute p-3 d-flex flex-column align-items-center justify-content-center" style="top: 0; left: 0; right: 0; bottom: 0; height: 100px; width: 100%; background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(5px);">
+              <h5 class="text-white fw-bold mb-2 text-center">Encrypt Your File!</h5>
+            </div>
           </div>
           <div class="card-header bg-white">
             <ul class="nav nav-tabs card-header-tabs">
