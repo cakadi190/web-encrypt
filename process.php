@@ -109,10 +109,10 @@ class FileEncryptionHandler
    * Validasi file sebelum proses enkripsi
    * 
    * @param array $file Data file yang akan divalidasi
-   * @return bool Mengembalikan true jika file valid
+   * @return string Mengembalikan nilai ekstensi jika file valid
    * @throws \Exception Jika file tidak valid dengan pesan kesalahan yang spesifik
    */
-  private function validateFile(array $file, array $allowedExtensions): bool
+  private function validateFile(array $file, array $allowedExtensions): string
   {
     // Periksa apakah file diunggah
     if (!isset($file['tmp_name']) || empty($file['tmp_name'])) {
@@ -130,7 +130,7 @@ class FileEncryptionHandler
       throw new \Exception("Unsupported file type", 415);
     }
 
-    return true;
+    return $extension;
   }
 
   /**
@@ -142,7 +142,7 @@ class FileEncryptionHandler
    */
   private function encryptFile(array $file): array
   {
-    $this->validateFile($file, self::ALLOWED_EXTENSIONS_ENCRYPT);
+    $extension = $this->validateFile($file, self::ALLOWED_EXTENSIONS_ENCRYPT);
 
     $fileContent = $this->fileService->getFile($file["tmp_name"]);
     $encryptedContent = $this->encryptService->encrypt($fileContent);
@@ -165,6 +165,7 @@ class FileEncryptionHandler
       "success" => true,
       "data" => [
         "fileName" => $filename,
+        "extension" => $extension,
         "iv" => bin2hex($iv),
       ],
     ];
@@ -182,7 +183,8 @@ class FileEncryptionHandler
   {
     $this->validateFile($file, self::ALLOWED_EXTENSIONS_DECRYPT);
     $fileContent = $this->fileService->getFile($file["tmp_name"]);
-    $decryptedContent = $this->encryptService->decrypt($fileContent, hex2bin($iv));
+    $iv = explode(',', $iv); // Untuk mengambil nilai iv yang masih memiliki koma separated
+    $decryptedContent = $this->encryptService->decrypt($fileContent, hex2bin($iv[0]));
 
     return [
       "status" => "success",
@@ -191,6 +193,7 @@ class FileEncryptionHandler
       "error" => false,
       "success" => true,
       "data" => [
+        "extension" => $iv[1],
         "result" => base64_encode($decryptedContent),
       ],
     ];

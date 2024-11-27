@@ -217,7 +217,7 @@
         success: function (data) {
           const result = data.data;
           $('#resultEncrypted').toggle(!!result.iv);
-          $('#iv-result').val(result.iv);
+          $('#iv-result').val(`${result.iv},${result.extension}`);
           $('#download-link').attr('href', `./download.php?filename=${result.fileName}`);
 
           $(form).find('button').html('Enkripsi');
@@ -340,7 +340,7 @@
 
           if (result && result.result) {
             $('#resultDecrypted').toggle(true);
-            $('#img-result').attr('src', `data:image/jpeg;base64,${result.result}`);
+            $('#img-result').attr('src', `data:image/${result.extension ?? 'jpeg'};base64,${result.result}`);
           } else {
             // Tambahkan penanganan kesalahan jika dekripsi gagal
             alert('Dekripsi gagal. Pastikan kunci dan file enkripsi benar.');
