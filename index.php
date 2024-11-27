@@ -165,14 +165,26 @@
         data: formData,
         contentType: false,
         processData: false,
+        beforeSend: function () {
+          $('#iv-result').val('');
+          $('#resultEncrypted').toggle(false);
+          $('#download-link').attr('href', ``);
+          $(form).find('button').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+        },
         success: function (data) {
           const result = data.data;
           $('#resultEncrypted').toggle(!!result.iv);
           $('#iv-result').val(result.iv);
           $('#download-link').attr('href', `./download.php?filename=${result.fileName}`);
+
+          $(form).find('button').html('Enkripsi');
         },
         error: function (error) {
           console.log(error);
+          $('#iv-result').val('');
+          $('#resultEncrypted').toggle(false);
+          $('#download-link').attr('href', ``);
+          $(form).find('button').html('Enkripsi');
         }
       });
     }

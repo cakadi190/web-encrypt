@@ -65,4 +65,15 @@ class File
     }
     return null;
   }
+
+  /**
+   * Remove a file
+   *
+   * @param string $file Path to the file
+   * @return bool True on success, false on failure
+   */
+  public function rmFile(string $file): bool
+  {
+    return unlink($file);
+  }
 }
