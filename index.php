@@ -13,8 +13,8 @@
   <div class="container py-5 min-vh-100">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <div class="card">
-          <div class="card-img-top" style="height: 200px;">
+        <div class="card rounded-4">
+          <div class="card-img-top overflow-hidden rounded-top-4" style="height: 200px;">
             <img class="w-100 h-100 object-fit-cover" src="assets/images/compressed.jpg" alt="Cover">
           </div>
           <div class="card-header bg-white">
