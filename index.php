@@ -56,13 +56,13 @@
             <div class="tab-pane fade" id="enkripsi">
               <div class="card card-body">
                 <h2 class="h5">Enkripsi</h2>
-                <p>Silahkan unggah berkas yang sesuai dengan format untuk dienkripsikan.</p>
+                <p>Silahkan unggah berkas yang sesuai dengan format untuk dienkripsikan dan maksimal ukuran berkasnya adalah 5MB (atau 5120KB).</p>
 
                 <form action="./process.php" id="post-encrypt" enctype="multipart/form-data" method="POST"
                   class="needs-validation" novalidate>
                   <div class="form-group mb-3">
                     <label for="file" class="form-label">Pilih berkas</label>
-                    <input type="file" name="file" id="file" data-max-size="1048576" class="form-control"
+                    <input type="file" name="file" id="file" data-max-size="5242880" class="form-control"
                       accept="image/*" required>
                     <div class="invalid-feedback">Harap isi dengan data yang benar.</div>
                   </div>
@@ -78,11 +78,18 @@
                         <i class="fas fa-key fa-fw"></i>
                       </span>
                       <input type="text" id="iv-result" readonly class="form-control" placeholder="Hasil Enkripsi" />
+                      <button class="btn btn-light" onclick="copyToClipboard('#iv-result', this)"><i
+                          class="fas fa-copy fa-fw"></i></button>
                     </div>
                     <div class="form-text">Mohon simpan kunci ini dengan baik untuk didekripsikan nanti.</div>
                   </div>
 
-                  <a class="btn btn-primary" id="download-link">Unduh Hasil Enkripsi</a>
+                  <div class="d-flex justify-content-start">
+                    <a class="btn btn-primary d-flex align-items-center gap-2" id="download-link">
+                      <i class="fas fa-download fa-fw"></i>
+                      <span>Unduh Hasil Enkripsi</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -170,6 +177,7 @@
           $('#resultEncrypted').toggle(false);
           $('#download-link').attr('href', ``);
           $(form).find('button').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+          $(form).find('button').attr('disabled', true);
         },
         success: function (data) {
           const result = data.data;
@@ -178,6 +186,7 @@
           $('#download-link').attr('href', `./download.php?filename=${result.fileName}`);
 
           $(form).find('button').html('Enkripsi');
+          $(form).find('button').removeAttr('disabled');
         },
         error: function (error) {
           console.log(error);
@@ -185,6 +194,7 @@
           $('#resultEncrypted').toggle(false);
           $('#download-link').attr('href', ``);
           $(form).find('button').html('Enkripsi');
+          $(form).find('button').removeAttr('disabled');
         }
       });
     }
@@ -245,6 +255,19 @@
         fileInput.setCustomValidity(message);
         feedback.textContent = message;
       }
+    }
+
+    function copyToClipboard(element, thisElement) {
+      const input = $(element);
+      if (!input.length) return;
+
+      input.select();
+      document.execCommand('copy');
+
+      $(thisElement).html('<i class="fas fa-check fa-fw"></i>');
+      setTimeout(() => {
+        $(thisElement).html('<i class="fas fa-copy fa-fw"></i>');
+      }, 1000);
     }
   </script>
 </body>
