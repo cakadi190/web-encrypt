@@ -123,6 +123,8 @@
             event.stopPropagation();
           } else {
             validateFile(event, form);
+
+            // Apply after here -------------------------------------
           }
           form.classList.add('was-validated');
         });
