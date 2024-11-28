@@ -319,3 +319,17 @@ function copyToClipboard(element, thisElement) {
     $(thisElement).html('<i class="fas fa-copy fa-fw"></i>');
   }, 1000);
 }
+
+/**
+ * Reset all forms in the page.
+ */
+function resetAllForms() {
+  const forms = document.querySelectorAll('form');
+  forms.forEach(form => {
+    form.reset();
+    form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+    form.querySelectorAll('.form-control').forEach(el => el.setCustomValidity(''));
+  });
+  const collapseElements = document.querySelectorAll('.collapse');
+  collapseElements.forEach(el => $(el).collapse('hide'));
+}

@@ -25,13 +25,13 @@
           <div class="card-header bg-white">
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#panduan">Panduan</button>
+                <button onclick="resetAllForms()" class="nav-link active" data-bs-toggle="tab" data-bs-target="#panduan">Panduan</button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#enkripsi">Enkripsi</button>
+                <button onclick="resetAllForms()" class="nav-link" data-bs-toggle="tab" data-bs-target="#enkripsi">Enkripsi</button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dekripsi">Dekripsi</button>
+                <button onclick="resetAllForms()" class="nav-link" data-bs-toggle="tab" data-bs-target="#dekripsi">Dekripsi</button>
               </li>
             </ul>
           </div>
@@ -131,6 +131,8 @@
             </div>
           </div>
         </div>
+
+        <p class="mb-0 text-center pt-4">Created By <a href="https://www.cakadi.web.id">Amir Zuhdi Wibowo</a>, Muhammad Dimas Mulyono, Rinda Kusuma Wardani.</p>
       </div>
     </div>
   </div>
