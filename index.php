@@ -108,7 +108,7 @@
                   class="needs-validation" novalidate>
                   <div class="form-group mb-3">
                     <label for="iv" class="form-label">Masukkan kunci enkripsi</label>
-                    <input type="text" name="iv" id="iv" class="form-control" required>
+                    <input type="text" name="iv" id="iv" class="form-control" required placeholder="Kunci Enkripsi Berformat Base64" />
                     <div class="invalid-feedback">Harap isi dengan data yang benar.</div>
                   </div>
                   <div class="form-group mb-3">

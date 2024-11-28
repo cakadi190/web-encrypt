@@ -330,6 +330,6 @@ function resetAllForms() {
     form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
     form.querySelectorAll('.form-control').forEach(el => el.setCustomValidity(''));
   });
-  const collapseElements = document.querySelectorAll('.collapse');
+  const collapseElements = $('.collapse');
   collapseElements.forEach(el => $(el).collapse('hide'));
 }
