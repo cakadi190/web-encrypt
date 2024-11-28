@@ -53,7 +53,7 @@ function base64ToFile(base64String, mimeType, fileName) {
 document.getElementById('download-file').addEventListener('click', function () {
   const base64Data = this.getAttribute('data-base64');
   const mimeType = this.getAttribute('data-mime') || 'image/jpeg';
-  const date = new Date().toISOString().slice(0, 10).replace(/-/g, '-');
+  const date = new Date().toISOString().replace('T', '_');
   const fileName = `decrypted_file-${date}.${mimeType.split('/')[1]}`;
   if (base64Data) {
     try {
