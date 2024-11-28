@@ -18,11 +18,11 @@ const supportedFormats = [
  */
 function createFormatListItem(format) {
   return `
-<li class="list-group-item d-flex gap-2 align-items-center">
-  <img src="${format.icon}" alt="Icon ${format.name}" style="height: 32px;aspect-ratio: 1/1">
-  <span><code>File ${format.name}</code></span>
-</li>
-`;
+  <li class="list-group-item d-flex gap-2 align-items-center">
+    <img src="${format.icon}" alt="Icon ${format.name}" style="height: 32px;aspect-ratio: 1/1">
+    <span><code>File ${format.name}</code></span>
+  </li>
+  `;
 }
 
 /**
