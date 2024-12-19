@@ -1,6 +1,6 @@
 /**
-     * Supported file formats and their associated icons.
-     */
+ * Supported file formats and their associated icons.
+ */
 const supportedFormats = [
   { name: 'PNG', icon: './assets/images/png.png' },
   { name: 'JPG', icon: './assets/images/jpg.png' },
