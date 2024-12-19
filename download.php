@@ -23,7 +23,7 @@ include_once __DIR__ . "/core/autoload.php";
  * @author
  * Amir Zuhdi Wibowo
  * Muhammad Dimas Mulyono
- * Rinda Kusuma Wardani
+ * Rinda Kusuma Dewi
  */
 class DownloadHandler
 {

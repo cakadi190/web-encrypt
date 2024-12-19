@@ -6,7 +6,7 @@ namespace Core\Classes;
  * Class for encrypting and decrypting strings
  *
  * @package Core
- * @author  Amir Zuhdi Wibowo, Muhammad Dimas Mulyono, Rinda Kusuma Wardani
+ * @author  Amir Zuhdi Wibowo, Muhammad Dimas Mulyono, Rinda Kusuma Dewi
  * @license MIT
  */
 class Encrypt

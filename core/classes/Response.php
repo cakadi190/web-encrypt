@@ -5,7 +5,7 @@ namespace Core\Classes;
 /**
  * Class Response
  * @package Core\Classes
- * @author  Amir Zuhdi Wibowo, Muhammad Dimas Mulyono, Rinda Kusuma Wardani
+ * @author  Amir Zuhdi Wibowo, Muhammad Dimas Mulyono, Rinda Kusuma Dewi
  * @version 1.0
  */
 class Response

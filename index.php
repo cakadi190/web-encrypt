@@ -132,7 +132,7 @@
           </div>
         </div>
 
-        <p class="mb-0 text-center pt-4">Created By <a href="https://www.cakadi.web.id">Amir Zuhdi Wibowo</a>, Muhammad Dimas Mulyono, Rinda Kusuma Wardani.</p>
+        <p class="mb-0 text-center pt-4">Created By <a href="https://www.cakadi.web.id">Amir Zuhdi Wibowo</a>, Muhammad Dimas Mulyono, Rinda Kusuma Dewi.</p>
       </div>
     </div>
   </div>

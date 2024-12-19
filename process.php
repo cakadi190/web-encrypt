@@ -14,7 +14,7 @@ include_once __DIR__ . "/core/autoload.php";
  * Menangani proses enkripsi dan dekripsi file dengan berbagai validasi keamanan
  * 
  * @package FileEncryption
- * @author Amir Zuhdi Wibowo, Muhammad Dimas Mulyono, Rinda Kusuma Wardani
+ * @author Amir Zuhdi Wibowo, Muhammad Dimas Mulyono, Rinda Kusuma Dewi
  * @version 1.0.0
  */
 class FileEncryptionHandler
